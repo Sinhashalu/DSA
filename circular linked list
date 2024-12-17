@@ -1,0 +1,91 @@
+// Implementation of Circular Single Linked List using Pointers.
+#include <stdio.h>
+#include <stdlib.h>
+// Node structure
+struct Node
+{
+ int data;
+ struct Node *next;
+};
+// Function to create a new node
+struct Node *createNode(int value)
+{
+ struct Node *newNode = (struct Node *)malloc(sizeof(struct 
+Node));
+ if (newNode == NULL)
+ {
+ printf("Memory allocation failed.\n");
+ exit(1);
+ }
+ newNode->data = value;
+ newNode->next = NULL;
+ return newNode;
+}
+// Function to insert a node at the beginning of the circular linked 
+list
+struct Node *insertAtBeginning(struct Node *head, int value)
+{
+ struct Node *newNode = createNode(value);
+ if (head == NULL)
+ {
+ // If the list is empty, make the new node the head and 
+point to itself
+ head = newNode;
+ head->next = head;
+ }
+ else
+ {
+ // Otherwise, insert the new node at the beginning and 
+update pointers
+ newNode->next = head->next;
+ head->next = newNode;
+ }
+return head;
+}
+// Function to display the circular linked list
+void display(struct Node *head)
+{
+ if (head == NULL)
+ {
+ printf("List is empty.\n");
+ return;
+ }
+ struct Node *current = head;
+ do
+ {
+ printf("%d -> ", current->data);
+ current = current->next;
+ } while (current != head);
+ printf("(head)\n");
+}
+// Function to free the memory allocated for the circular linked 
+list
+void freeList(struct Node *head)
+{
+ if (head == NULL)
+ {
+ return;
+ }
+ struct Node *current = head;
+ struct Node *temp;
+ do
+ {
+ temp = current;
+ current = current->next;
+ free(temp);
+ } while (current != head);
+}
+int main()
+{
+ struct Node *head = NULL;
+ // Inserting elements into the circular linked list
+ head = insertAtBeginning(head, 3);
+ head = insertAtBeginning(head, 2);
+ head = insertAtBeginning(head, 1);
+ // Displaying the circular linked list
+ printf("Circular Linked List: ");
+ display(head);
+ // Freeing the memory allocated for the circular linked list
+freeList(head);
+ return 0;
+}
