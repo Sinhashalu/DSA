@@ -1,0 +1,139 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node{ 
+ int data; 
+ struct Node* prev; 
+ struct Node* next; 
+} Node;
+Node* createNode(int data) { 
+ Node* newNode = (Node*) malloc(sizeof(Node)); 
+ if (!newNode) { 
+ printf("Memory error
+\n"); 
+ exit(1); 
+ } 
+ newNode
+->data = data; 
+ newNode
+->prev = NULL; 
+ newNode
+->next = NULL; 
+ return newNode; }
+void insertAtBeginning(Node** head, int data) { 
+ Node* newNode = createNode(data); 
+ if (*head != NULL) { 
+ (*head)
+->prev = newNode; 
+ 
+}
+ newNode
+->next = *head; 
+ *head = newNode; 
+} 
+void insertAtEnd(Node** head, int data) { 
+ Node* newNode = createNode(data); 
+ if (*head == NULL) { 
+ *head = newNode; 
+ return; 
+ } 
+ Node* temp = *head; 
+ while (temp
+->next != NULL) { 
+ temp = temp
+->next; 
+ } 
+ temp
+->next = newNode; 
+ newNode
+->prev = temp; 
+}
+void traverse(Node* head) { 
+ Node* temp = head; 
+ while (temp != NULL) { 
+ printf("%d 
+-> ", temp
+->data); 
+ temp = temp
+->next; 
+ } 
+ printf("NULL
+\n"); 
+} 
+Node* search(Node* head, int key) { 
+ Node* temp = head; 
+ while (temp != NULL) { 
+   if (temp->data == key) { 
+ return temp; 
+ } 
+ temp = temp->next; 
+ } 
+ return NULL; 
+}
+void deleteAtBeginning(Node** head) { 
+ if (*head == NULL)
+ return; 
+ Node* temp = *head; 
+ *head = (*head)->next; 
+ if (*head != NULL) { 
+ (*head)->prev = NULL; 
+ } 
+ free(temp); 
+} 
+void deleteAtEnd(Node** head) { 
+ if (*head == NULL) 
+ return; 
+ Node* temp = *head; 
+ while (temp->next != NULL) { 
+ temp = temp->next; 
+ } 
+ if (temp->prev != NULL) { 
+ temp->prev->next = NULL; 
+ } 
+ else{ 
+ *head = NULL; 
+ } 
+ free(temp); 
+}
+int main(){
+ Node* head = NULL;
+ int choice, data;
+ while(1){
+ printf("1. Insert element at the beginning \n");
+ printf("2. Insert element at the end \n");
+ printf("3. Display all elements \n");
+ printf("4. Search for an element \n");
+ printf("5. Delete element from the beginning \n");
+ printf("6. Delete element from the end \n");
+ printf("7. Exit \n");
+ printf("Enter your choice : ");
+ scanf("%d",&choice);
+ switch(choice){
+ case 1: printf("Enter a value to insert: ");
+ scanf("%d", &data);
+insertAtBeginning(&head, data);
+break;
+ case 2: printf("Enter a value to insert: ");
+ scanf("%d", &data);
+insertAtEnd(&head, data);
+break;
+ case 3: traverse(head);
+ break;
+ case 4: printf("Enter a value to search: ");
+ scanf("%d", &data);
+Node* result = search(head, data);
+if(result != NULL) {
+ printf("Element found: %d\n", result->data);
+ } else {
+ printf("Element not found\n");
+ }
+break;
+ case 5: deleteAtBeginning(&head);
+ break;
+ case 6: deleteAtEnd(&head);
+ break;
+ case 7: exit(0);
+ default: printf("Invalid choice! Try again!!!\n");
+ }
+ } 
+ return 0;
+}
