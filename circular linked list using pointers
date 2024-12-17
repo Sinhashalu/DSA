@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdio.h>
+// Node structure for a doubly linked list
+struct Node {
+ int data;
+ struct Node* next;
+ struct Node* prev;
+};
+// Function to create a new node
+struct Node* createNode(int data) {
+ struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+ if (newNode == NULL) {
+ printf("Memory allocation failed\n");
+ exit(1);
+ }
+ newNode->data = data;
+ newNode->next = NULL;
+ newNode->prev = NULL;
+ return newNode;
+}
+// Function to insert a node at the beginning of the circular doubly linked list
+void insertAtBeginning(struct Node** head, int data) {
+ struct Node* newNode = createNode(data);
+if (*head == NULL) {
+ // If the list is empty, make the new node the only node in the list
+ *head = newNode;
+ (*head)->next = *head;
+ (*head)->prev = *head;
+ } else {
+ // If the list is not empty, insert the new node at the beginning
+ newNode->next = *head;
+ newNode->prev = (*head)->prev;
+ (*head)->prev->next = newNode;
+ (*head)->prev = newNode;
+ *head = newNode; // Update the head pointer
+ }
+}
+// Function to display the circular doubly linked list
+void displayList(struct Node* head) {
+ if (head == NULL) {
+ printf("List is empty\n");
+ return;
+ }
+ struct Node* current = head;
+ do {
+ printf("%d <-> ", current->data);
+ current = current->next;
+ } while (current != head);
+ printf("(head)\n");
+}
+// Function to free the memory allocated for the circular doubly linked list
+void freeList(struct Node** head) {
+ if (*head == NULL) {
+ return;
+ }
+ struct Node* current = *head;
+ struct Node* nextNode;
+ do {
+ nextNode = current->next;
+ free(current);
+ current = nextNode;
+ } while (current != *head);
+ *head = NULL;
+}
+int main() {
+ struct Node* head = NULL;
+ // Insert nodes at the beginning of the list
+ insertAtBeginning(&head, 3);
+ insertAtBeginning(&head, 2);
+ insertAtBeginning(&head, 1);
+ // Display the list
+ printf("Circular Doubly Linked List:\n");
+ displayList(head);
+ // Free the memory allocated for the list
+ freeList(&head);
+ return 0;
+}
+Implementation of Circular Doubly Linked List using Pointers. 
+// Function to insert a node at the beginning of the list
+void insertAtBeginning(struct Node** head, int data) {
+ struct Node* newNode = createNode(data);
+ if (*head == NULL) {
+ *head = newNode;
+ newNode->next = *head;
+ newNode->prev = *head;
+ } else {
+ newNode->next = *head;
+ newNode->prev = (*head)->prev;
+ (*head)->prev->next = newNode;
+ (*head)->prev = newNode;
+ *head = newNode;
+ }
+}
+// Function to display the Circular Doubly Linked List
+void displayList(struct Node* head) {
+ if (head == NULL) {
+ printf("List is empty\n");
+ return;
+ }
+ struct Node* current = head;
+ do {
+ printf("%d <-> ", current->data);
+ current = current->next;
+ } while (current != head);
+ printf("(head)\n");
+}
+// Main function to test the Circular Doubly Linked List implementation
+int main() {
+ struct Node* head = NULL;
+ // Inserting nodes at the beginning
+ insertAtBeginning(&head, 3);
+ insertAtBeginning(&head, 2);
+ insertAtBeginning(&head, 1);
+ // Displaying the Circular Doubly Linked List
+ printf("Circular Doubly Linked List:\n");
+ displayList(head);
+ // Adding more nodes
+ insertAtBeginning(&head, 4);
+ insertAtBeginning(&head, 5);
+ // Displaying the Circular Doubly Linked List again
+ printf("Updated Circular Doubly Linked List:\n");
+ displayList(head);
+ return 0;
+}
