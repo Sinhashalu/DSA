@@ -1,0 +1,189 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+ int data; 
+ struct node *next; 
+};
+struct node *head = NULL;
+struct node *createnode(int data) {
+ struct node *newnode = (struct node *)malloc(sizeof(struct node));
+ if (newnode == NULL) {
+ printf("Memory allocation failed. Cannot create the node.\n");
+ return NULL;
+ }
+ newnode->data = data;
+ newnode->next = NULL;
+ return newnode;
+}
+void insertathead(int data) {
+ struct node *newnode = createnode(data);
+ if (newnode == NULL) {
+ return;
+ }
+ newnode->next = head;
+ head = newnode;
+ printf("Successfully Done.\n");
+}
+void insertatend(int data) {
+ struct node *newnode = createnode(data);
+ if (newnode == NULL) {
+ return;
+ }
+ if (head == NULL) {
+ head = newnode;
+ } else {
+ struct node *last = head;
+ while (last->next != NULL) {
+ last = last->next;
+ }
+ last->next = newnode;
+ }
+ printf("Successfully Done.\n");
+}
+void insertatposition(int data, int key) {
+ if (key < 1) {
+ printf("Invalid key.\n");
+return;
+ 
+}
+ struct node *newnode = createnode(data);
+ if (newnode == NULL) {
+ return;
+ 
+}
+ if (key == 1) {
+ newnode
+->next = head;
+ head = newnode;
+ } else {
+ struct node *prev = head;
+ int count = 1;
+ while (count < key 
+- 1 && prev != NULL) {
+ prev = prev
+->next;
+ count++;
+ 
+}
+ if (prev == NULL) {
+ printf("Invalid key.
+\n");
+ return;
+ 
+}
+ newnode
+->next = prev
+->next;
+ prev
+->next = newnode;
+ 
+}
+ printf("Successfully Done.
+\n");
+}
+int deleteathead() {
+ if (head == NULL) {
+ printf("ERROR:Underflow.
+\n");
+ return 
+-1;
+ 
+}
+ struct node *delnode = head;
+ head = head
+->next;
+ int data = delnode
+->data;
+ free(delnode);
+ printf("Successfully Done.
+\n");
+}
+int deleteatend() {
+ if (head == NULL) {
+ printf("ERROR:Underflow.
+\n");
+ return 
+-1;
+ 
+}
+ struct node *prev = NULL;
+ struct node *last = head;
+ while (last
+->next != NULL) {
+ prev = last;
+ last = last
+->next;
+ 
+}
+ int data = last
+->data;
+ if (prev == NULL) {
+ head = NULL;
+ } else {
+ prev
+->next = NULL;
+ 
+}
+ free(last);
+ printf("Successfully Done.
+\n");
+}
+void display() {
+ if (head == NULL) {
+printf("ERROR:Underflow");
+ return;
+ }
+ printf("The linked list is:\n");
+ struct node *temp = head;
+ while (temp != NULL) {
+ printf("%d -> ", temp->data);
+ temp = temp->next;
+ }
+ printf("NULL\n");
+}
+int main() {
+ int ch, data, key;
+ printf("Menu:\n");
+ printf("1. Insert at head\n");
+ printf("2. Insert at end\n");
+ printf("3. Insert at position\n");
+ printf("4. Delete at head\n");
+ printf("5. Delete at end\n");
+ printf("6. Display\n");
+ printf("7. Exit\n");
+ while(1){
+ printf("Enter your choice: ");
+ scanf("%d", &ch);
+ switch (ch) {
+ case 1:
+ printf("Enter the data to insert at the head: ");
+ scanf("%d", &data);
+ insertathead(data);
+ break;
+ case 2:
+ printf("Enter the data to insert at the end: ");
+ scanf("%d", &data);
+ insertatend(data);
+ break;
+ case 3:
+ printf("Enter the data and position to insert: ");
+ scanf("%d%d", &data, &key);
+ insertatposition(data,key);
+ break;
+ case 4:
+ deleteathead();
+ break;
+ case 5:
+ deleteatend();
+ break;
+ case 6:
+ display();
+ break;
+ case 7:
+ printf("Thank you\n");
+ return 0;
+ default:
+ printf("Invalid choice. Please try again.\n");
+ }
+ }
+}
