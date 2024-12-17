@@ -1,0 +1,243 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_SIZE 100
+struct node{
+ int data;
+ int next;
+};
+struct node arr[MAX_SIZE];
+int free_slot=0;
+int head=-1;
+int createnode(int data){
+ if(free_slot==MAX_SIZE){
+ printf("ERROR: OVERFLOW.\n");
+ return -1;
+ }
+ int new_node=free_slot;
+ free_slot=arr[free_slot].next;
+ arr[new_node].data= data;
+ arr[new_node].next =-1;
+ return new_node;
+}
+void insertathead(int data){
+ int new_node=createnode(data);
+ if(new_node==-1){
+ return;
+ }
+ arr[new_node].next =head;
+ head=new_node;
+ printf("Successfully done.\n");
+}
+void insertatend(int data){
+ int new_node=createnode(data);
+ if(new_node==-1){
+ return ;
+ }
+ if(head==-1){
+ head=new_node;
+ }
+else{
+ int last = head;
+ while(arr[last].next!=
+-1){
+ last=arr[last].next;
+ 
+}
+ arr[last].next=new_node;
+ 
+}
+ printf("Successfully done.
+\n");
+}
+void insertatposition(int data,int key){
+ if (key < 1){
+ printf("Invalid key.
+\n");
+ return;
+ 
+}
+ int new_node= createnode(data);
+ if(new_node==
+-1){
+ return;
+ 
+}
+ if(key==1){
+ arr[new_node].next=head;
+ head = new_node;
+ 
+}
+ else{
+ int prev= head;
+ int count = 1;
+ while (count < key 
+-1 && prev!=
+-1){
+ prev = arr[prev].next;
+ count++;
+ 
+}
+ if (prev == 
+-1){
+ printf("Invalid position.
+\n");
+ return;
+ 
+}
+ arr[new_node].next=arr[prev].next;
+ arr[prev].next=new_node;
+ 
+}
+ printf("Succesfully Done.
+\n");
+}
+int deletenode(int i){
+ if(i<0 || i >= MAX_SIZE){
+ printf("Invalid index.
+\n");
+ return 
+-1;
+ 
+}
+ int data = arr[i].data;
+ arr[i].next= free_slot;
+ free_slot= i;
+ return data; }
+int deleteathead(){
+ if ( head== 
+-1){
+ printf("ERROR:Underflow.
+\n");
+ return 
+-1;
+ 
+}
+ int del_node = head;
+ head = arr[head].next;
+ int data = deletenode(del_node);
+ printf("Successfully Done.
+\n");
+}
+int deleteatend(){
+ if(head==
+-1){
+ printf("ERROR: Underflow.
+\n");
+ return 
+-1;
+ 
+}
+ int prev =
+-1;
+ int last = head;
+ while(arr[last].next!=
+-1){
+ prev = last;
+ last = arr[last].next;
+ 
+}
+ if(prev==
+-1){
+ head =
+-1;
+ 
+}
+ else{
+ arr[prev].next=
+-1;
+ 
+}
+ int info= deletenode(last);
+ printf("Successfully Done.
+\n");
+}
+void display(){
+ if(head==
+-1){
+ printf("ERROR:Underflow.
+\n");
+ return;
+ 
+}
+ printf("THE LINKED LIST IS:
+\n");
+ int temp = head;
+ while(temp!=
+-1){
+ printf("%d
+->",arr[temp].data);
+ temp=arr[temp].next;
+ 
+}
+ printf("NULL
+\n");
+}
+void init(){
+ for(int j=0;j<MAX_SIZE; j++){
+ arr[j].data = 0;
+ arr[j].next =j+1;
+ 
+}
+ arr[MAX_SIZE
+-1].next=
+-1;
+}
+int main(){
+ init();
+ int ch,data,key;
+ printf("MENU:
+\n");
+ printf("1.Insert at head
+\n");
+ printf("2.Insert at end.
+\n");
+ printf("3.Insert at position.
+\n");
+ printf("4.Delete at head.
+\n");
+ printf("5.Delete at end.
+\n");
+ printf("6.Display
+\n");
+ printf("7.Exit
+\n");
+ while( 1){
+ printf("Enter your choice:");
+scanf("%d", &ch);
+ 
+ switch(ch){
+ case 1:
+ printf("Enter data to insert at head:");
+ scanf("%d",&data);
+ insertathead(data);
+ break;
+ case 2:
+ printf("Enter data to insert at end:");
+ scanf("%d",&data);
+ insertatend(data);
+ break;
+ case 3:
+ printf("Enter the data to enter and position:");
+ scanf("%d%d",&data,&key);
+ insertatposition(data,key);
+ break;
+ case 4:
+ printf("Deleting data from head\n");
+ deleteathead();
+ break;
+ case 5:
+ printf("Deleting element from end\n ");
+ deleteatend();
+ break;
+ case 6:
+ printf("here is your output:");
+ display();
+ break;
+ case 7:
+ printf("Thankyou\n");
+ return 0;
+ default:
+ printf("Invalid choice.Please try again./n");
+ }
+ }
+  }
